@@ -1,0 +1,40 @@
+# Output folders
+bin/
+obj/
+
+
+ 
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Configuration files (local only)
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
+secrets.json
+
+# Logs
+*.log
+logs/
+
+# IDE folders
+.vscode/
+.idea/
+.ReSharper*/
+*_Resharper*/
+*.DotSettings.user
+
+# Test results
+TestResults/
+*.coverage
+*.coveragexml
+
+# Environment
+.env
+.env.*
+
+# Publish output
+publish/
+out/
