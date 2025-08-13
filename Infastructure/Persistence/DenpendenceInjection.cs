@@ -1,6 +1,9 @@
-﻿using Application.IRepositories;
+﻿using Application.IEventBus;
+using Application.IRepositories;
 using Application.IServices;
+
 using Infastructure.Services;
+using Infrastructure.Messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,17 +27,25 @@ namespace Infastructure.Persistence
         }
         #endregion
         #region Services registation
-        public static IServiceCollection AddServices(this IServiceCollection services)
+        public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IClassService, ClassService>();
             services.AddScoped<ISystemAccountService, SystemAccountService>();
             services.AddScoped<IServiceAggregator, ServiceAggregator>();
+            var kafkaBootstrapServers = configuration.GetConnectionString("BootstrapServers")
+                                     ?? configuration["Kafka:BootstrapServers"]
+                                     ?? "localhost:9092";
+            services.AddScoped<IMessagePublisher>(sp =>
+                 new KafkaMessagePublisher(kafkaBootstrapServers));
+
+            services.AddScoped<IMessageConsumer>(sp =>
+                new KafkaMessageConsumer(kafkaBootstrapServers));
             return services;
         }
         #endregion
         public static IServiceCollection AddDatabaseAndConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DemoContext>(options =>
+            services.AddDbContext<SqlContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultSQLConnection"));
             }

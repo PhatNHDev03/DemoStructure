@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infastructure.Persistence;
 
-public partial class DemoContext : DbContext
+public partial class SqlContext : DbContext
 {
-    public DemoContext()
+    public SqlContext()
     {
     }
 
-    public DemoContext(DbContextOptions<DemoContext> options)
+    public SqlContext(DbContextOptions<SqlContext> options)
         : base(options)
     {
     }

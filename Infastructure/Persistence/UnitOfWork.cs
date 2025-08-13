@@ -10,9 +10,9 @@ namespace Infastructure.Persistence
 {
     public class QueryUnitOfWork : IQueryUnitOfWork
     {
-        private readonly DemoContext _context;
+        private readonly SqlContext _context;
 
-        public QueryUnitOfWork(DemoContext context)
+        public QueryUnitOfWork(SqlContext context)
         {
             _context = context;
         }
@@ -29,9 +29,9 @@ namespace Infastructure.Persistence
     }
     public class CommandUnitOfWork : ICommandUnitOfWork
     {
-        private readonly DemoContext _context;
+        private readonly SqlContext _context;
         private IDbContextTransaction _transaction;
-        public CommandUnitOfWork(DemoContext context)
+        public CommandUnitOfWork(SqlContext context)
         {
             _context = context;
         }

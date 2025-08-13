@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.IEventBus;
 using Application.IRepositories;
 using Application.IServices;
 using Application.Ult;
@@ -15,10 +16,12 @@ namespace Infastructure.Services
     {
         private readonly IQueryUnitOfWork _queryUnitOfWork;
         private readonly ICommandUnitOfWork _commandUnitOfWork;
-        public ClassService(IQueryUnitOfWork queryUnitOfWork, ICommandUnitOfWork commandUnitOfWork)
+        private readonly IMessagePublisher _messagePublisher;
+        public ClassService(IQueryUnitOfWork queryUnitOfWork, ICommandUnitOfWork commandUnitOfWork, IMessagePublisher messagePublisher)
         {
             _queryUnitOfWork = queryUnitOfWork;
             _commandUnitOfWork = commandUnitOfWork;
+            _messagePublisher = messagePublisher;
         }
         public async Task<ClassDto> Create(ClassRequest item)
         {
@@ -35,14 +38,17 @@ namespace Infastructure.Services
                     MaxStudents = item.MaxStudents
                 };
                 var result = await _commandUnitOfWork.Repository<Class>().AddAsync(newClass);
-                await _commandUnitOfWork.SaveChangesAsync();
+                await _commandUnitOfWork.SaveChangesAsync();    
                 await _commandUnitOfWork.CommitAsync();
-                return ClassDto.ConvertToClassDto(result);
+                var dto= ClassDto.ConvertToClassDto(result);
+                _= _messagePublisher.PublishAsync("class-created", dto);
+                //await _messageConsumer.ConsumeAsync("user-events", "user-service-group", cancellationToken);
+                return dto;
             }
             catch (Exception ex) {
                 await _commandUnitOfWork.RollbackAsync();
                 Console.WriteLine(ex.Message);
-                return null;
+                throw;
             }
         }
 

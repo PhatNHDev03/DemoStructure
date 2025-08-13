@@ -12,12 +12,12 @@ namespace Infastructure.Persistence
 {
     public class GenericQueryRepository<T> : IQueryableRepository<T> where T : class
     {
-        protected   readonly DemoContext _demoContext;
+        protected   readonly SqlContext _SqlContext;
         protected readonly DbSet<T> _dbset;
-        public GenericQueryRepository(DemoContext demoContext)
+        public GenericQueryRepository(SqlContext SqlContext)
         {
-            _demoContext = demoContext;
-            _dbset = _demoContext.Set<T>();
+            _SqlContext = SqlContext;
+            _dbset = _SqlContext.Set<T>();
         }
         public async Task<(IQueryable<T> items, int totalItems)> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, int pageSize = 0, int pageNumber = 1)
         {
@@ -60,7 +60,7 @@ namespace Infastructure.Persistence
             // Nếu vẫn bị track, force detach
             if (result != null && !traced)
             {
-                var entry = _demoContext.Entry(result);
+                var entry = _SqlContext.Entry(result);
                 if (entry.State != EntityState.Detached)
                 {
                     entry.State = EntityState.Detached;
@@ -72,12 +72,12 @@ namespace Infastructure.Persistence
     }
     public class GenericCommandRepository<T> : IModifiableRepository<T> where T : class
     {
-        protected readonly DemoContext _demoContext;
+        protected readonly SqlContext _SqlContext;
         protected readonly DbSet<T> _dbset;
-        public GenericCommandRepository(DemoContext demoContext)
+        public GenericCommandRepository(SqlContext SqlContext)
         {
-            _demoContext = demoContext;
-            _dbset = _demoContext.Set<T>();
+            _SqlContext = SqlContext;
+            _dbset = _SqlContext.Set<T>();
         }
 
         public async Task<T> AddAsync(T entity)
@@ -95,13 +95,13 @@ namespace Infastructure.Persistence
         public async Task<T> Update(T entity)
         {
             AttachIfNeeded(entity);    
-            _demoContext.Entry(entity).State = EntityState.Modified; 
+            _SqlContext.Entry(entity).State = EntityState.Modified; 
             _dbset.Update(entity);
             return  entity;
         }
         private void AttachIfNeeded(T entity) {
-            var entityDetached = _demoContext.Entry(entity);
-            if (entityDetached.State == EntityState.Detached) _demoContext.Attach(entityDetached);     
+            var entityDetached = _SqlContext.Entry(entity);
+            if (entityDetached.State == EntityState.Detached) _SqlContext.Attach(entityDetached);     
         }
     }
 }

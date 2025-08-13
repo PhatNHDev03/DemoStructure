@@ -61,10 +61,6 @@ namespace Application.DTOs
     }
 
 
-
-
-
-
     // tao nhanh 1 class DTO thôi tạo thẳng class cũng được chẳng qua class thì có thể thêm function để tùy biến như convertToDto còn cái này
     // thì ko thể tạo được function --> tạo như nào cũng được
     public record LoginRequest(string userName, string password);

@@ -1,4 +1,5 @@
-﻿using Application.IServices;
+﻿using Application.IEventBus;
+using Application.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,14 @@ namespace Infastructure.Persistence
 
         public ISystemAccountService SystemAccountService { get; }
 
-        public ServiceAggregator(IClassService classService, ISystemAccountService systemAccountService)
+        public IMessageConsumer MessageConsumer { get; }    
+        public IMessagePublisher MessagePublisher { get; }
+        public ServiceAggregator(IClassService classService, ISystemAccountService systemAccountService, IMessagePublisher messagePublisher,IMessageConsumer messageConsumer)
         {
             ClassService = classService;
             SystemAccountService = systemAccountService;
+            MessagePublisher = messagePublisher;
+            MessageConsumer = messageConsumer;
         }
 
     }
