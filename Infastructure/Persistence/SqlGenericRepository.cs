@@ -1,4 +1,5 @@
 ﻿using Application.IRepositories;
+using Infastructure.Sql.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,14 +8,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Infastructure.Persistence
 {
-    public class GenericQueryRepository<T> : IQueryableRepository<T> where T : class
+    public class SqlGenericQueryRepository<T> : ISqlQueryableRepository<T> where T : class
     {
-        protected   readonly SqlContext _SqlContext;
+        protected readonly SqlContext _SqlContext;
         protected readonly DbSet<T> _dbset;
-        public GenericQueryRepository(SqlContext SqlContext)
+        public SqlGenericQueryRepository(SqlContext SqlContext)
         {
             _SqlContext = SqlContext;
             _dbset = _SqlContext.Set<T>();
@@ -39,8 +39,8 @@ namespace Infastructure.Persistence
                     query = query.Include(property);
                 }
             }
-            return (items: query, totalItems: totalItems);
-           
+            return (items: query, totalItems);
+
         }
 
         public async Task<T> GetByCondition(Expression<Func<T, bool>> filter = null, bool traced = true, string? includeProperties = null)
@@ -68,13 +68,13 @@ namespace Infastructure.Persistence
             }
             return result;
         }
-         
+
     }
-    public class GenericCommandRepository<T> : IModifiableRepository<T> where T : class
+    public class  SqlGenericCommandRepository<T> : ISqlCommandRepository<T> where T : class
     {
         protected readonly SqlContext _SqlContext;
         protected readonly DbSet<T> _dbset;
-        public GenericCommandRepository(SqlContext SqlContext)
+        public SqlGenericCommandRepository(SqlContext SqlContext)
         {
             _SqlContext = SqlContext;
             _dbset = _SqlContext.Set<T>();
@@ -89,19 +89,20 @@ namespace Infastructure.Persistence
 
         public async Task Delete(T entity)
         {
-             _dbset.Remove(entity);
+            _dbset.Remove(entity);
         }
 
         public async Task<T> Update(T entity)
         {
-            AttachIfNeeded(entity);    
-            _SqlContext.Entry(entity).State = EntityState.Modified; 
+            AttachIfNeeded(entity);
+            _SqlContext.Entry(entity).State = EntityState.Modified;
             _dbset.Update(entity);
-            return  entity;
+            return entity;
         }
-        private void AttachIfNeeded(T entity) {
+        private void AttachIfNeeded(T entity)
+        {
             var entityDetached = _SqlContext.Entry(entity);
-            if (entityDetached.State == EntityState.Detached) _SqlContext.Attach(entityDetached);     
+            if (entityDetached.State == EntityState.Detached) _SqlContext.Attach(entityDetached);
         }
     }
 }

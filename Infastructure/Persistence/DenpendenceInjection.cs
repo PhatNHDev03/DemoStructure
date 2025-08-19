@@ -1,8 +1,7 @@
 ﻿using Application.IEventBus;
 using Application.IRepositories;
 using Application.IServices;
-
-using Infastructure.Services;
+using Infastructure.Sql.Persistence;
 using Infrastructure.Messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Infastructure.Services;
 
 namespace Infastructure.Persistence
 {
@@ -51,7 +51,7 @@ namespace Infastructure.Persistence
             }
            );
 
-            services.AddSingleton<IConfiguration>(configuration);
+            services.AddSingleton(configuration);
             return services;
         }
 

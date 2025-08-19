@@ -22,4 +22,8 @@ public partial class SystemAccount
     public DateTime? CreatedAt { get; set; }
 
     public string Status { get; set; }
+
+    public virtual ICollection<InventoryProduct> InventoryProducts { get; set; } = new List<InventoryProduct>();
+
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infastructure.Persistence;
+namespace Infastructure.Sql.Persistence;
 
 public partial class SqlContext : DbContext
 {
@@ -20,22 +20,28 @@ public partial class SqlContext : DbContext
 
     public virtual DbSet<Class> Classes { get; set; }
 
+    public virtual DbSet<InventoryProduct> InventoryProducts { get; set; }
+
+    public virtual DbSet<Product> Products { get; set; }
+
     public virtual DbSet<Student> Students { get; set; }
 
     public virtual DbSet<SystemAccount> SystemAccounts { get; set; }
+
+    public virtual DbSet<Transaction> Transactions { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Class>(entity =>
         {
-            entity.HasKey(e => e.ClassId).HasName("PK__class__FDF4798653195B13");
+            entity.HasKey(e => e.ClassId).HasName("PK__class__FDF479863A8DDEF8");
 
             entity.ToTable("class");
 
             entity.HasIndex(e => e.ClassCode, "IX_class_class_code");
 
-            entity.HasIndex(e => e.ClassCode, "UQ__class__0AF9B2E426FC8CD1").IsUnique();
+            entity.HasIndex(e => e.ClassCode, "UQ__class__0AF9B2E46729E470").IsUnique();
 
             entity.Property(e => e.ClassId).HasColumnName("class_id");
             entity.Property(e => e.ClassCode)
@@ -61,9 +67,87 @@ public partial class SqlContext : DbContext
                 .HasColumnName("teacher_name");
         });
 
+        modelBuilder.Entity<InventoryProduct>(entity =>
+        {
+            entity.HasKey(e => e.InventoryId).HasName("PK__inventor__B59ACC49B533B142");
+
+            entity.ToTable("inventoryProduct");
+
+            entity.HasIndex(e => e.SystemAccountId, "IX_inventory_account_id");
+
+            entity.HasIndex(e => e.ProductId, "IX_inventory_product_id");
+
+            entity.Property(e => e.InventoryId).HasColumnName("inventory_id");
+            entity.Property(e => e.LastUpdated)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("last_updated");
+            entity.Property(e => e.Notes)
+                .HasMaxLength(255)
+                .HasColumnName("notes");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.SystemAccountId).HasColumnName("system_account_id");
+            entity.Property(e => e.WarehouseLocation)
+                .HasMaxLength(50)
+                .HasColumnName("warehouse_location");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.InventoryProducts)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_inventory_product");
+
+            entity.HasOne(d => d.SystemAccount).WithMany(p => p.InventoryProducts)
+                .HasForeignKey(d => d.SystemAccountId)
+                .HasConstraintName("FK_inventory_account");
+        });
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.HasKey(e => e.ProductId).HasName("PK__product__47027DF53120D41A");
+
+            entity.ToTable("product");
+
+            entity.HasIndex(e => e.ProductCode, "IX_product_product_code");
+
+            entity.HasIndex(e => e.ProductName, "IX_product_product_name");
+
+            entity.HasIndex(e => e.ProductCode, "UQ__product__AE1A8CC4A8FCBE95").IsUnique();
+
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.Category)
+                .HasMaxLength(50)
+                .HasColumnName("category");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("created_date");
+            entity.Property(e => e.Description)
+                .HasMaxLength(500)
+                .HasColumnName("description");
+            entity.Property(e => e.Price)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("price");
+            entity.Property(e => e.ProductCode)
+                .IsRequired()
+                .HasMaxLength(20)
+                .HasColumnName("product_code");
+            entity.Property(e => e.ProductName)
+                .IsRequired()
+                .HasMaxLength(100)
+                .HasColumnName("product_name");
+            entity.Property(e => e.Status)
+                .HasMaxLength(20)
+                .HasDefaultValue("Active")
+                .HasColumnName("status");
+            entity.Property(e => e.Unit)
+                .HasMaxLength(20)
+                .HasDefaultValue("Cái")
+                .HasColumnName("unit");
+        });
+
         modelBuilder.Entity<Student>(entity =>
         {
-            entity.HasKey(e => e.StudentId).HasName("PK__student__2A33069AB1490E15");
+            entity.HasKey(e => e.StudentId).HasName("PK__student__2A33069A5BBACCEA");
 
             entity.ToTable("student");
 
@@ -71,7 +155,7 @@ public partial class SqlContext : DbContext
 
             entity.HasIndex(e => e.FullName, "IX_student_full_name");
 
-            entity.HasIndex(e => e.StudentCode, "UQ__student__6DF33C4539DD585A").IsUnique();
+            entity.HasIndex(e => e.StudentCode, "UQ__student__6DF33C45A8C581D1").IsUnique();
 
             entity.Property(e => e.StudentId).HasColumnName("student_id");
             entity.Property(e => e.Address)
@@ -110,11 +194,15 @@ public partial class SqlContext : DbContext
 
         modelBuilder.Entity<SystemAccount>(entity =>
         {
-            entity.HasKey(e => e.AccountId).HasName("PK__system_a__46A222CD97C5530D");
+            entity.HasKey(e => e.AccountId).HasName("PK__system_a__46A222CD17FB827F");
 
             entity.ToTable("system_account");
 
-            entity.HasIndex(e => e.Username, "UQ__system_a__F3DBC5726AF14D62").IsUnique();
+            entity.HasIndex(e => e.Role, "IX_system_account_role");
+
+            entity.HasIndex(e => e.Username, "IX_system_account_username");
+
+            entity.HasIndex(e => e.Username, "UQ__system_a__F3DBC5722A556B67").IsUnique();
 
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.CreatedAt)
@@ -143,6 +231,36 @@ public partial class SqlContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("username");
+        });
+
+        modelBuilder.Entity<Transaction>(entity =>
+        {
+            entity.HasKey(e => e.TransactionId).HasName("PK__TRANSACT__85C600AFF068F21F");
+
+            entity.ToTable("TRANSACTION");
+
+            entity.HasIndex(e => e.SystemAccountId, "IX_transaction_account_id");
+
+            entity.HasIndex(e => e.InventoryId, "IX_transaction_inventory_id");
+
+            entity.HasIndex(e => e.Status, "IX_transaction_status");
+
+            entity.Property(e => e.TransactionId).HasColumnName("transaction_id");
+            entity.Property(e => e.InventoryId).HasColumnName("inventory_id");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.Status)
+                .HasMaxLength(20)
+                .HasDefaultValue("Pending")
+                .HasColumnName("status");
+            entity.Property(e => e.SystemAccountId).HasColumnName("system_account_id");
+
+            entity.HasOne(d => d.Inventory).WithMany(p => p.Transactions)
+                .HasForeignKey(d => d.InventoryId)
+                .HasConstraintName("FK_transaction_inventory");
+
+            entity.HasOne(d => d.SystemAccount).WithMany(p => p.Transactions)
+                .HasForeignKey(d => d.SystemAccountId)
+                .HasConstraintName("FK_transaction_account");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -1,6 +1,5 @@
 ﻿using Api.Middlewares;
 using Application.IEventBus;
-
 using Infastructure.Persistence;
 using Infrastructure.Messages;
 

@@ -19,11 +19,23 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[inventoryProduct]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[product]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[student]",
          "ObjectType": 0
       },
       {
          "Name": "[dbo].[system_account]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TRANSACTION]",
          "ObjectType": 0
       }
    ],

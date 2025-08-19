@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.Helpers;
 using Application.IEventBus;
 using Application.IRepositories;
 using Application.IServices;
@@ -43,6 +44,8 @@ namespace Infastructure.Services
                 var dto= ClassDto.ConvertToClassDto(result);
                 _= _messagePublisher.PublishAsync("class-created", dto);
                 //await _messageConsumer.ConsumeAsync("user-events", "user-service-group", cancellationToken);
+                // ep kieu dateTimeUtc ve dateTime
+                dto.CreatedDate = TimeZoneHelper.ConvertUtcToVietnam((DateTime)dto.CreatedDate);
                 return dto;
             }
             catch (Exception ex) {
@@ -81,7 +84,7 @@ namespace Infastructure.Services
         public async Task<ClassDetailDto> GetByIdAsync(int id)
         {
             var item = await _queryUnitOfWork.Repository<Class>().GetByCondition(filter: x => x.ClassId == id, includeProperties: "Students");
-            return (item == null) ? null : ClassDetailDto.ConvertToDto(item);
+            return item == null ? null : ClassDetailDto.ConvertToDto(item);
         }
 
         public async Task<ClassDto> Update(int id, ClassRequest item)
