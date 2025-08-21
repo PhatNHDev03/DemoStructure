@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infastructure", "Infastructure\Infastructure.csproj", "{5D7E8FFE-CEDF-4EB4-BE3D-3AE1F4CE1E6D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{963DE789-0A97-410E-8AA5-BC4AA6312072}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{4F0CCD19-073A-451F-8BBF-CA7B9C3C805D}"
@@ -16,16 +14,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infastructure", "Infastructure\Infastructure.csproj", "{9926F944-72F1-6C45-D07D-DC2D79CE9E91}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5D7E8FFE-CEDF-4EB4-BE3D-3AE1F4CE1E6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D7E8FFE-CEDF-4EB4-BE3D-3AE1F4CE1E6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D7E8FFE-CEDF-4EB4-BE3D-3AE1F4CE1E6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D7E8FFE-CEDF-4EB4-BE3D-3AE1F4CE1E6D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{963DE789-0A97-410E-8AA5-BC4AA6312072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{963DE789-0A97-410E-8AA5-BC4AA6312072}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{963DE789-0A97-410E-8AA5-BC4AA6312072}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -38,6 +34,10 @@ Global
 		{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9926F944-72F1-6C45-D07D-DC2D79CE9E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9926F944-72F1-6C45-D07D-DC2D79CE9E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9926F944-72F1-6C45-D07D-DC2D79CE9E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9926F944-72F1-6C45-D07D-DC2D79CE9E91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿
+using Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,6 @@ namespace Application.DTOs
                 ClassCode = item.ClassCode,
                 TeacherName = item.TeacherName,
                 RoomNumber = item.RoomNumber,
-                CreatedDate = item.CreatedDate,
                 MaxStudents = item.MaxStudents
             };
         }
@@ -45,7 +45,6 @@ namespace Application.DTOs
                 ClassCode = item.ClassCode,
                 TeacherName = item.TeacherName,
                 RoomNumber = item.RoomNumber,
-                CreatedDate = item.CreatedDate,
                 MaxStudents = item.MaxStudents
             };
         }
@@ -76,7 +75,6 @@ namespace Application.DTOs
                 ClassCode = item.ClassCode,
                 TeacherName = item.TeacherName,
                 RoomNumber = item.RoomNumber,
-                CreatedDate = item.CreatedDate,
                 MaxStudents = item.MaxStudents,
                 Students = item.Students != null ? (item.Students.Select(x => StudentDto.ConverToDto(x)).ToList()) : null
             };

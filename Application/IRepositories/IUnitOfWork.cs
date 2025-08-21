@@ -9,12 +9,12 @@ namespace Application.IRepositories
 {
     public interface IQueryUnitOfWork : IDisposable
     {
-        ISqlQueryableRepository<T> Repository<T>() where T : class;
+        IQueryableRepository<T> Repository<T>() where T : class;
     }
 
     public interface ICommandUnitOfWork : IDisposable
     {
-        ISqlCommandRepository<T> Repository<T>() where T : class;
+        ICommandRepository<T> Repository<T>() where T : class;
         Task<int> SaveChangesAsync();
         public IDbContextTransaction BeginTransaction();
         public Task RollbackAsync();

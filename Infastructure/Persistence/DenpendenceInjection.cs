@@ -1,17 +1,18 @@
 ﻿using Application.IEventBus;
 using Application.IRepositories;
 using Application.IServices;
-using Infastructure.Sql.Persistence;
+using Infastructure.Services;
+using Infastructure.Persistence;
 using Infrastructure.Messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infastructure.Services;
 
 namespace Infastructure.Persistence
 {
@@ -45,11 +46,11 @@ namespace Infastructure.Persistence
         #endregion
         public static IServiceCollection AddDatabaseAndConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<SqlContext>(options =>
+            services.AddDbContext<SchoolManagementContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultSQLConnection"));
-            }
-           );
+                // ✅ Đổi từ UseSqlServer sang UseNpgsql
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+            });
 
             services.AddSingleton(configuration);
             return services;

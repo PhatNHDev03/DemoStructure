@@ -1,5 +1,5 @@
 ﻿using Application.IRepositories;
-using Infastructure.Sql.Persistence;
+using Infastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,11 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 namespace Infastructure.Persistence
 {
-    public class SqlGenericQueryRepository<T> : ISqlQueryableRepository<T> where T : class
+    public class GenericQueryRepository<T> : IQueryableRepository<T> where T : class
     {
-        protected readonly SqlContext _SqlContext;
+        protected readonly SchoolManagementContext _SqlContext;
         protected readonly DbSet<T> _dbset;
-        public SqlGenericQueryRepository(SqlContext SqlContext)
+        public GenericQueryRepository(SchoolManagementContext SqlContext)
         {
             _SqlContext = SqlContext;
             _dbset = _SqlContext.Set<T>();
@@ -70,11 +70,11 @@ namespace Infastructure.Persistence
         }
 
     }
-    public class  SqlGenericCommandRepository<T> : ISqlCommandRepository<T> where T : class
+    public class  GenericCommandRepository<T> : ICommandRepository<T> where T : class
     {
-        protected readonly SqlContext _SqlContext;
+        protected readonly SchoolManagementContext _SqlContext;
         protected readonly DbSet<T> _dbset;
-        public SqlGenericCommandRepository(SqlContext SqlContext)
+        public GenericCommandRepository(SchoolManagementContext SqlContext)
         {
             _SqlContext = SqlContext;
             _dbset = _SqlContext.Set<T>();

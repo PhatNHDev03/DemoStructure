@@ -14,9 +14,9 @@ namespace Infastructure.Persistence
 
         public ISystemAccountService SystemAccountService { get; }
 
-        public IMessageConsumer MessageConsumer { get; }    
+        public IMessageConsumer MessageConsumer { get; }
         public IMessagePublisher MessagePublisher { get; }
-        public ServiceAggregator(IClassService classService, ISystemAccountService systemAccountService, IMessagePublisher messagePublisher,IMessageConsumer messageConsumer)
+        public ServiceAggregator(IClassService classService, ISystemAccountService systemAccountService, IMessagePublisher messagePublisher, IMessageConsumer messageConsumer)
         {
             ClassService = classService;
             SystemAccountService = systemAccountService;

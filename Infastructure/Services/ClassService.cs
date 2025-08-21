@@ -35,7 +35,6 @@ namespace Infastructure.Services
                     ClassCode = item.ClassCode,
                     TeacherName = item.TeacherName,
                     RoomNumber = item.RoomNumber,
-                    CreatedDate = item.CreatedDate,
                     MaxStudents = item.MaxStudents
                 };
                 var result = await _commandUnitOfWork.Repository<Class>().AddAsync(newClass);
@@ -98,7 +97,6 @@ namespace Infastructure.Services
                 existingItem.ClassCode = item.ClassCode;
                 existingItem.TeacherName = item.TeacherName;
                 existingItem.RoomNumber = item.RoomNumber;
-                existingItem.CreatedDate = item.CreatedDate;
                 existingItem.MaxStudents = item.MaxStudents;
            
                 var result = await _commandUnitOfWork.Repository<Class>().Update(existingItem);

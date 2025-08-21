@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Application.IRepositories
 {
-    public interface ISqlQueryableRepository<T> where T : class
+    public interface IQueryableRepository<T> where T : class
     {
         Task<(IQueryable<T> items, int totalItems)> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, int pageSize = 0, int pageNumber = 1);
         Task<T> GetByCondition(Expression<Func<T, bool>> filter = null, bool traced = true, string? includeProperties = null);
 
     }
-    public interface ISqlCommandRepository<T> where T : class
+    public interface ICommandRepository<T> where T : class
     {
         Task<T> AddAsync(T entity);
         Task<T> Update(T entity);

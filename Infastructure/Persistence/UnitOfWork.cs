@@ -1,5 +1,5 @@
 ﻿using Application.IRepositories;
-using Infastructure.Sql.Persistence;
+using Infastructure.Persistence;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
@@ -11,9 +11,9 @@ namespace Infastructure.Persistence
 {
     public class QueryUnitOfWork : IQueryUnitOfWork
     {
-        private readonly SqlContext _context;
+        private readonly SchoolManagementContext _context;
 
-        public QueryUnitOfWork(SqlContext context)
+        public QueryUnitOfWork(SchoolManagementContext context)
         {
             _context = context;
         }
@@ -30,14 +30,14 @@ namespace Infastructure.Persistence
     }
     public class CommandUnitOfWork : ICommandUnitOfWork
     {
-        private readonly SqlContext _context;
+        private readonly SchoolManagementContext _context;
         private IDbContextTransaction _transaction;
-        public CommandUnitOfWork(SqlContext context)
+        public CommandUnitOfWork(SchoolManagementContext context)
         {
             _context = context;
         }
 
-        public IModifiableRepository<T> Repository<T>() where T : class
+        public ICommandRepository<T> Repository<T>() where T : class
         {
             return new GenericCommandRepository<T>(_context);
         }

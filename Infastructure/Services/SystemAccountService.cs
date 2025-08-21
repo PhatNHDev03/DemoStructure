@@ -1,7 +1,6 @@
 ﻿using Application.DTOs;
 using Application.IRepositories;
 using Application.IServices;
-using Azure.Core;
 using Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
