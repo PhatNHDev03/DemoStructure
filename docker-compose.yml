@@ -28,20 +28,19 @@ services:
     depends_on:
       - zookeeper_demo_capstone
 
-  backend_api:
-    build:
-      context: .
-      dockerfile: Api/Dockerfile
-    container_name: backend_demo_capstone
-    ports:
-      - "8080:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - Kafka__BootstrapServers=kafka_demo_capstone:9092
-    depends_on:
-      - kafka_demo_capstone
-      - sql_server_demo
+  # backend_api:
+  #   build:
+  #     context: .
+  #     dockerfile: Api/Dockerfile
+  #   container_name: backend_demo_capstone
+  #   ports:
+  #     - "8080:80"
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #     - ASPNETCORE_URLS=http://+:80
+  #     - Kafka__BootstrapServers=kafka_demo_capstone:9092
+  #   depends_on:
+  #     - kafka_demo_capstone
 
   kafka_ui:
     image: provectuslabs/kafka-ui:latest
@@ -56,22 +55,8 @@ services:
       - kafka_demo_capstone
       - zookeeper_demo_capstone
 
-  sql_server_demo:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sql_server_demo
-    environment:
-      SA_PASSWORD: "Phat@2003"
-      ACCEPT_EULA: "Y"
-    ports:
-      - "1433:1433"
-    volumes:
-      - sql_server_data_demo_capstone:/var/opt/mssql
-    restart: unless-stopped
-
 volumes:
   zookeeper_data_demo_capstone:
     driver: local
   kafka_data_demo_capstone:
-    driver: local
-  sql_server_data_demo_capstone:
     driver: local
